@@ -1,11 +1,12 @@
 {
   "document": "App",
-  "version": "1.0.0",
-  "status": "draft",
+  "version": "2.0.0",
+  "status": "final",
   "application": {
     "name": "mobile-app",
     "platform": "mobile-web",
-    "framework": "React"
+    "framework": "React",
+    "router": "react-router"
   },
   "runtime": {
     "root": {
@@ -17,13 +18,10 @@
       "display": "flex",
       "flexDirection": "column"
     },
-    "router": {
-      "library": "react-router",
-      "architecture": "separate-layout-routes"
-    },
-    "pageHost": {
-      "activePage": "current-route-only",
-      "renderMode": "single"
+    "routing": "react-router-separate-layout-routes",
+    "pageRendering": {
+      "strategy": "current-route-only",
+      "activePageCountPerRoute": 1
     }
   },
   "componentTree": {
@@ -32,164 +30,232 @@
         {
           "component": "AppRouter",
           "children": [
-            {
-              "component": "AppShellRoute",
-              "layout": "AppShell",
-              "children": [
-                {
-                  "component": "AppHeader",
-                  "children": [
-                    "Logo",
-                    "NotificationAction",
-                    "CartAction",
-                    "ProfileAction"
-                  ]
-                },
-                {
-                  "component": "PageHost",
-                  "layout": "MainContent",
-                  "pages": [
-                    "HomePage",
-                    "ProductsPage",
-                    "LiveChatPage",
-                    "NotificationPage",
-                    "CartPage",
-                    "ProfilePage"
-                  ]
-                },
-                {
-                  "component": "BottomNavigation",
-                  "items": [
-                    "Home",
-                    "Products",
-                    "LiveChat"
-                  ]
-                }
-              ]
-            },
-            {
-              "component": "StandaloneRoute",
-              "layout": "StandalonePages",
-              "children": [
-                {
-                  "component": "StandaloneHeader"
-                },
-                {
-                  "component": "StandaloneContent",
-                  "pages": [
-                    "ProductDetailPage",
-                    "NotificationPage",
-                    "CartPage",
-                    "LiveChatPage",
-                    "CheckoutPage",
-                    "PaymentResultPage"
-                  ]
-                },
-                {
-                  "component": "StandaloneBottomAction"
-                }
-              ]
-            }
+            "AppShellRoute",
+            "StandaloneRoute"
           ]
         },
         {
           "component": "OverlayHost",
-          "scope": "global",
-          "children": [
-            "Modal",
-            "Drawer",
-            "Dialog",
-            "Toast"
-          ]
+          "scope": "global"
         }
       ]
     }
   },
-  "layouts": {
-    "AppShell": {
-      "display": "flex",
-      "flexDirection": "column",
-      "height": "100%"
+  "pageRegistry": {
+    "HomePage": {
+      "component": "HomePage",
+      "type": "main"
     },
-    "MainContent": {
-      "flex": 1,
-      "minHeight": 0,
-      "overflowY": "auto"
+    "ProductsPage": {
+      "component": "ProductsPage",
+      "type": "main"
     },
-    "StandalonePages": {
-      "display": "flex",
-      "flexDirection": "column",
-      "height": "100%"
+    "ProfilePage": {
+      "component": "ProfilePage",
+      "type": "main"
     },
-    "StandaloneContent": {
-      "flex": 1,
-      "minHeight": 0,
-      "overflowY": "auto"
+    "ProductDetailPage": {
+      "component": "ProductDetailPage",
+      "type": "standalone"
+    },
+    "CheckoutPage": {
+      "component": "CheckoutPage",
+      "type": "standalone"
+    },
+    "PaymentResultPage": {
+      "component": "PaymentResultPage",
+      "type": "standalone"
+    },
+    "LiveChatPage": {
+      "component": "LiveChatPage",
+      "type": "shared"
+    },
+    "NotificationPage": {
+      "component": "NotificationPage",
+      "type": "shared"
+    },
+    "CartPage": {
+      "component": "CartPage",
+      "type": "shared"
     }
   },
-  "routing": {
-    "library": "react-router",
-    "routeGroups": [
+  "layouts": {
+    "AppShell": {
+      "component": "AppShell",
+      "display": "flex",
+      "flexDirection": "column",
+      "height": "100%",
+      "regions": [
+        "AppHeader",
+        "PageHost",
+        "BottomNavigation"
+      ],
+      "pageOutlet": "PageHost",
+      "contentRegion": {
+        "component": "PageHost",
+        "flex": 1,
+        "minHeight": 0,
+        "overflowY": "auto"
+      }
+    },
+    "StandalonePages": {
+      "component": "StandalonePages",
+      "display": "flex",
+      "flexDirection": "column",
+      "height": "100%",
+      "regions": [
+        "StandaloneHeader",
+        "StandaloneContent",
+        "StandaloneBottomAction"
+      ],
+      "pageOutlet": "StandaloneContent",
+      "contentRegion": {
+        "component": "StandaloneContent",
+        "flex": 1,
+        "minHeight": 0,
+        "overflowY": "auto"
+      },
+      "excludes": [
+        "AppHeader",
+        "BottomNavigation"
+      ]
+    }
+  },
+  "routes": {
+    "strategy": "explicit-route-to-page-and-layout-mapping",
+    "items": [
       {
-        "id": "app-shell",
-        "layout": "AppShell",
-        "pageHost": "PageHost",
-        "pages": [
-          "HomePage",
-          "ProductsPage",
-          "LiveChatPage",
-          "NotificationPage",
-          "CartPage",
-          "ProfilePage"
-        ]
+        "routeId": "home",
+        "path": null,
+        "pageId": "HomePage",
+        "layoutId": "AppShell"
       },
       {
-        "id": "standalone",
-        "layout": "StandalonePages",
-        "pages": [
-          "ProductDetailPage",
-          "NotificationPage",
-          "CartPage",
-          "LiveChatPage",
-          "CheckoutPage",
-          "PaymentResultPage"
-        ]
+        "routeId": "products",
+        "path": null,
+        "pageId": "ProductsPage",
+        "layoutId": "AppShell"
+      },
+      {
+        "routeId": "livechat-main",
+        "path": null,
+        "pageId": "LiveChatPage",
+        "layoutId": "AppShell"
+      },
+      {
+        "routeId": "notification-main",
+        "path": null,
+        "pageId": "NotificationPage",
+        "layoutId": "AppShell"
+      },
+      {
+        "routeId": "cart-main",
+        "path": null,
+        "pageId": "CartPage",
+        "layoutId": "AppShell"
+      },
+      {
+        "routeId": "profile",
+        "path": null,
+        "pageId": "ProfilePage",
+        "layoutId": "AppShell"
+      },
+      {
+        "routeId": "product-detail",
+        "path": null,
+        "pageId": "ProductDetailPage",
+        "layoutId": "StandalonePages"
+      },
+      {
+        "routeId": "notification-standalone",
+        "path": null,
+        "pageId": "NotificationPage",
+        "layoutId": "StandalonePages"
+      },
+      {
+        "routeId": "cart-standalone",
+        "path": null,
+        "pageId": "CartPage",
+        "layoutId": "StandalonePages"
+      },
+      {
+        "routeId": "livechat-standalone",
+        "path": null,
+        "pageId": "LiveChatPage",
+        "layoutId": "StandalonePages"
+      },
+      {
+        "routeId": "checkout",
+        "path": null,
+        "pageId": "CheckoutPage",
+        "layoutId": "StandalonePages"
+      },
+      {
+        "routeId": "payment-result",
+        "path": null,
+        "pageId": "PaymentResultPage",
+        "layoutId": "StandalonePages"
       }
     ],
     "rules": [
-      "The current URL selects the active route and page.",
-      "PageHost renders exactly one active page.",
-      "AppShell and StandalonePages are separate layout routes.",
-      "StandalonePages do not render AppHeader or BottomNavigation.",
-      "A page may be available in both route groups when its presentation requires a different layout."
+      "Each route references exactly one existing pageId and one existing layoutId.",
+      "A page may be referenced by multiple routes and multiple layouts.",
+      "The route selects the layout; page type never selects or restricts the layout.",
+      "React Router resolves the current route and renders only its referenced page.",
+      "Route IDs must be unique.",
+      "Final path values must be defined before routing implementation and must not conflict."
     ]
   },
   "navigation": {
     "header": [
-      "Logo",
-      "NotificationAction",
-      "CartAction",
-      "ProfileAction"
+      {
+        "itemId": "logo",
+        "component": "Logo",
+        "targetRouteId": "home"
+      },
+      {
+        "itemId": "notification",
+        "component": "NotificationAction",
+        "targetRouteId": "notification-main"
+      },
+      {
+        "itemId": "cart",
+        "component": "CartAction",
+        "targetRouteId": "cart-main"
+      },
+      {
+        "itemId": "profile",
+        "component": "ProfileAction",
+        "targetRouteId": "profile"
+      }
     ],
     "bottomNavigation": [
-      "Home",
-      "Products",
-      "LiveChat"
+      {
+        "itemId": "home",
+        "label": "Home",
+        "targetRouteId": "home"
+      },
+      {
+        "itemId": "products",
+        "label": "Products",
+        "targetRouteId": "products"
+      },
+      {
+        "itemId": "livechat",
+        "label": "LiveChat",
+        "targetRouteId": "livechat-main"
+      }
     ],
-    "rule": "Header and BottomNavigation navigation actions resolve to their corresponding routes; standalone route rendering remains outside AppShell."
+    "rules": [
+      "Navigation items reference routeId, not pageId.",
+      "Every targetRouteId must exist in routes.items.",
+      "Navigation actions do not determine the layout; the target route does."
+    ]
   },
-  "standalonePageContract": {
-    "requiredRegions": [
-      "StandaloneHeader",
-      "StandaloneContent",
-      "StandaloneBottomAction"
-    ],
-    "inheritsAppHeader": false,
-    "inheritsBottomNavigation": false
-  },
-  "overlay": {
+  "overlays": {
     "host": "OverlayHost",
-    "placement": "global-outside-page-layout",
+    "scope": "global",
+    "placement": "outside-layout-routes",
     "supported": [
       "Modal",
       "Drawer",
@@ -197,10 +263,29 @@
       "Toast"
     ]
   },
+  "validation": {
+    "pageRegistry": [
+      "Every page entry must have a unique pageId.",
+      "Every page entry must define component and type.",
+      "type must be exactly one of: main, standalone, shared.",
+      "type is classification metadata with lightweight validation only.",
+      "type must not determine route, layout, or page reuse eligibility."
+    ],
+    "routes": [
+      "Every routeId must be unique.",
+      "Every non-null pageId must exist in pageRegistry.",
+      "Every non-null layoutId must exist in layouts.",
+      "Every route must resolve to exactly one page and one layout.",
+      "Final route paths must be unique and unambiguous."
+    ],
+    "navigation": [
+      "Every targetRouteId must exist in routes.items."
+    ]
+  },
   "openDecisions": [
-    "Exact route path strings and route parameters.",
-    "Detailed page-level content and component composition.",
-    "Whether StandaloneBottomAction is hidden on specific standalone routes.",
-    "Navigation behavior for authentication and error states, if required."
+    "Exact route path strings and route parameters remain to be defined.",
+    "Detailed page-level content and component composition remain outside this contract.",
+    "Whether StandaloneBottomAction is hidden on specific standalone routes remains to be defined.",
+    "Authentication and error-state navigation behavior remains to be defined if required."
   ]
 }
