@@ -1,0 +1,206 @@
+{
+  "document": "App",
+  "version": "1.0.0",
+  "status": "draft",
+  "application": {
+    "name": "mobile-app",
+    "platform": "mobile-web",
+    "framework": "React"
+  },
+  "runtime": {
+    "root": {
+      "component": "App",
+      "height": {
+        "preferred": "100dvh",
+        "fallback": "100%"
+      },
+      "display": "flex",
+      "flexDirection": "column"
+    },
+    "router": {
+      "library": "react-router",
+      "architecture": "separate-layout-routes"
+    },
+    "pageHost": {
+      "activePage": "current-route-only",
+      "renderMode": "single"
+    }
+  },
+  "componentTree": {
+    "App": {
+      "children": [
+        {
+          "component": "AppRouter",
+          "children": [
+            {
+              "component": "AppShellRoute",
+              "layout": "AppShell",
+              "children": [
+                {
+                  "component": "AppHeader",
+                  "children": [
+                    "Logo",
+                    "NotificationAction",
+                    "CartAction",
+                    "ProfileAction"
+                  ]
+                },
+                {
+                  "component": "PageHost",
+                  "layout": "MainContent",
+                  "pages": [
+                    "HomePage",
+                    "ProductsPage",
+                    "LiveChatPage",
+                    "NotificationPage",
+                    "CartPage",
+                    "ProfilePage"
+                  ]
+                },
+                {
+                  "component": "BottomNavigation",
+                  "items": [
+                    "Home",
+                    "Products",
+                    "LiveChat"
+                  ]
+                }
+              ]
+            },
+            {
+              "component": "StandaloneRoute",
+              "layout": "StandalonePages",
+              "children": [
+                {
+                  "component": "StandaloneHeader"
+                },
+                {
+                  "component": "StandaloneContent",
+                  "pages": [
+                    "ProductDetailPage",
+                    "NotificationPage",
+                    "CartPage",
+                    "LiveChatPage",
+                    "CheckoutPage",
+                    "PaymentResultPage"
+                  ]
+                },
+                {
+                  "component": "StandaloneBottomAction"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "component": "OverlayHost",
+          "scope": "global",
+          "children": [
+            "Modal",
+            "Drawer",
+            "Dialog",
+            "Toast"
+          ]
+        }
+      ]
+    }
+  },
+  "layouts": {
+    "AppShell": {
+      "display": "flex",
+      "flexDirection": "column",
+      "height": "100%"
+    },
+    "MainContent": {
+      "flex": 1,
+      "minHeight": 0,
+      "overflowY": "auto"
+    },
+    "StandalonePages": {
+      "display": "flex",
+      "flexDirection": "column",
+      "height": "100%"
+    },
+    "StandaloneContent": {
+      "flex": 1,
+      "minHeight": 0,
+      "overflowY": "auto"
+    }
+  },
+  "routing": {
+    "library": "react-router",
+    "routeGroups": [
+      {
+        "id": "app-shell",
+        "layout": "AppShell",
+        "pageHost": "PageHost",
+        "pages": [
+          "HomePage",
+          "ProductsPage",
+          "LiveChatPage",
+          "NotificationPage",
+          "CartPage",
+          "ProfilePage"
+        ]
+      },
+      {
+        "id": "standalone",
+        "layout": "StandalonePages",
+        "pages": [
+          "ProductDetailPage",
+          "NotificationPage",
+          "CartPage",
+          "LiveChatPage",
+          "CheckoutPage",
+          "PaymentResultPage"
+        ]
+      }
+    ],
+    "rules": [
+      "The current URL selects the active route and page.",
+      "PageHost renders exactly one active page.",
+      "AppShell and StandalonePages are separate layout routes.",
+      "StandalonePages do not render AppHeader or BottomNavigation.",
+      "A page may be available in both route groups when its presentation requires a different layout."
+    ]
+  },
+  "navigation": {
+    "header": [
+      "Logo",
+      "NotificationAction",
+      "CartAction",
+      "ProfileAction"
+    ],
+    "bottomNavigation": [
+      "Home",
+      "Products",
+      "LiveChat"
+    ],
+    "rule": "Header and BottomNavigation navigation actions resolve to their corresponding routes; standalone route rendering remains outside AppShell."
+  },
+  "standalonePageContract": {
+    "requiredRegions": [
+      "StandaloneHeader",
+      "StandaloneContent",
+      "StandaloneBottomAction"
+    ],
+    "inheritsAppHeader": false,
+    "inheritsBottomNavigation": false
+  },
+  "overlay": {
+    "host": "OverlayHost",
+    "placement": "global-outside-page-layout",
+    "supported": [
+      "Modal",
+      "Drawer",
+      "Dialog",
+      "Toast"
+    ]
+  },
+  "openDecisions": [
+    "Exact route path strings and route parameters.",
+    "Detailed page-level content and component composition.",
+    "Whether StandaloneBottomAction is hidden on specific standalone routes.",
+    "Navigation behavior for authentication and error states, if required."
+  ]
+}
