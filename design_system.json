@@ -1,0 +1,129 @@
+{
+  "document": "design_system",
+  "version": "1.0.0",
+  "status": "draft",
+  "platform": "mobile-web",
+  "principles": [
+    "Mobile-first responsive design.",
+    "Consistent visual language across AppShell and StandalonePages.",
+    "Separate structural layout rules from visual styling tokens.",
+    "Reusable components should consume semantic design tokens.",
+    "Scrollable content regions must not cause the application root to overflow."
+  ],
+  "layout": {
+    "appRoot": {
+      "height": {
+        "preferred": "100dvh",
+        "fallback": "100%"
+      },
+      "display": "flex",
+      "flexDirection": "column"
+    },
+    "appShell": {
+      "display": "flex",
+      "flexDirection": "column",
+      "height": "100%"
+    },
+    "mainContent": {
+      "flex": 1,
+      "minHeight": 0,
+      "overflowY": "auto"
+    },
+    "standalonePage": {
+      "display": "flex",
+      "flexDirection": "column",
+      "height": "100%"
+    },
+    "standaloneContent": {
+      "flex": 1,
+      "minHeight": 0,
+      "overflowY": "auto"
+    },
+    "constraints": {
+      "appHeader": "Non-scrolling region within AppShell.",
+      "bottomNavigation": "Non-scrolling region within AppShell.",
+      "standaloneHeader": "Non-scrolling region within StandalonePages.",
+      "standaloneBottomAction": "Non-scrolling action region within StandalonePages."
+    }
+  },
+  "tokens": {
+    "color": {
+      "status": "to_be_defined",
+      "semantic": {
+        "background": "{color.background}",
+        "surface": "{color.surface}",
+        "textPrimary": "{color.text.primary}",
+        "textSecondary": "{color.text.secondary}",
+        "border": "{color.border}",
+        "primary": "{color.primary}",
+        "success": "{color.success}",
+        "warning": "{color.warning}",
+        "danger": "{color.danger}"
+      }
+    },
+    "typography": {
+      "status": "to_be_defined",
+      "families": {},
+      "sizes": {},
+      "weights": {},
+      "lineHeights": {}
+    },
+    "spacing": {
+      "status": "to_be_defined",
+      "scale": {}
+    },
+    "radius": {
+      "status": "to_be_defined",
+      "scale": {}
+    },
+    "elevation": {
+      "status": "to_be_defined",
+      "levels": {}
+    },
+    "breakpoints": {
+      "status": "to_be_defined",
+      "values": {}
+    }
+  },
+  "componentStyles": {
+    "AppHeader": {
+      "status": "to_be_defined"
+    },
+    "BottomNavigation": {
+      "status": "to_be_defined"
+    },
+    "StandaloneHeader": {
+      "status": "to_be_defined"
+    },
+    "StandaloneBottomAction": {
+      "status": "to_be_defined"
+    },
+    "Button": {
+      "status": "to_be_defined"
+    },
+    "Input": {
+      "status": "to_be_defined"
+    },
+    "Card": {
+      "status": "to_be_defined"
+    },
+    "Modal": {
+      "status": "to_be_defined"
+    },
+    "Drawer": {
+      "status": "to_be_defined"
+    },
+    "Dialog": {
+      "status": "to_be_defined"
+    },
+    "Toast": {
+      "status": "to_be_defined"
+    }
+  },
+  "rules": [
+    "Components must use semantic tokens rather than hard-coded visual values where practical.",
+    "Layout behavior is defined here only as a visual/layout contract; route ownership remains in App.json.",
+    "AppShell and StandalonePages share design tokens but retain separate structural layouts.",
+    "Do not invent final color, typography, spacing, or elevation values before design decisions are approved."
+  ]
+}
