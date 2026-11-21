@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "document": "blueprint",
+  "version": "1.1.0",
+  "status": "draft",
+  "project": {
+    "name": "mobile-app",
+    "platform": "web",
+    "framework": "React",
+    "target": "mobile-only"
+  },
+  "purpose": "Master specification for application architecture, specification ownership, and implementation contracts.",
+  "source_of_truth": {
+    "blueprint.json": "Master architecture, document map, and cross-document rules.",
+    "App.json": "Application composition, routing, page definitions, and overlay placement.",
+    "design_system.json": "Design tokens, visual rules, and reusable UI styling."
+  },
+  "architecture": {
+    "root": {
+      "component": "App",
+      "height": {
+        "preferred": "100dvh",
+        "fallback": "100%"
+      },
+      "display": "flex",
+      "flexDirection": "column"
+    },
+    "routing": {
+      "library": "react-router",
+      "strategy": "layout-routes",
+      "pageActivation": "route-driven"
+    },
+    "pageHost": {
+      "rule": "Render only the page matched by the current route."
+    },
+    "layouts": {
+      "appShell": {
+        "display": "flex",
+        "flexDirection": "column",
+        "children": [
+          "AppHeader",
+          "PageHost",
+          "BottomNavigation"
+        ]
+      },
+      "mainContent": {
+        "flex": 1,
+        "minHeight": 0,
+        "overflowY": "auto"
+      },
+      "standalonePage": {
+        "display": "flex",
+        "flexDirection": "column",
+        "children": [
+          "StandaloneHeader",
+          "StandaloneContent",
+          "StandaloneBottomAction"
+        ]
+      },
+      "standaloneContent": {
+        "flex": 1,
+        "minHeight": 0,
+        "overflowY": "auto"
+      }
+    },
+    "standalonePages": {
+      "usesAppShell": false,
+      "usesAppHeader": false,
+      "usesBottomNavigation": false
+    },
+    "overlayHost": {
+      "scope": "global",
+      "placement": "outside-page-layout"
+    }
+  },
+  "documents": {
+    "App.json": {
+      "role": "Application structure and behavior",
+      "owns": [
+        "component hierarchy",
+        "route definitions",
+        "page registry",
+        "navigation",
+        "overlay host"
+      ]
+    },
+    "design_system.json": {
+      "role": "Visual system",
+      "owns": [
+        "design tokens",
+        "typography",
+        "spacing",
+        "radii",
+        "elevation",
+        "component styles",
+        "layout rules"
+      ]
+    }
+  },
+  "globalRules": [
+    "React Router determines the active page.",
+    "PageHost renders one route-matched page at a time.",
+    "AppShell pages and StandalonePages use separate layout routes.",
+    "StandalonePages must not render AppShell AppHeader or BottomNavigation.",
+    "OverlayHost is global and is not nested inside an individual page layout.",
+    "MainContent and StandaloneContent must be allowed to shrink and scroll vertically.",
+    "Do not treat a specification as implemented until the corresponding code is present and verified."
+  ],
+  "implementation": {
+    "status": "not_implemented_by_this_document",
+    "framework": "React",
+    "routing": "React Router"
+  },
+  "validation": [
+    "All JSON documents parse successfully.",
+    "App.json and design_system.json do not contradict this blueprint.",
+    "Every route resolves to the correct layout group.",
+    "Only one route page is active in PageHost.",
+    "Standalone pages do not inherit AppShell navigation."
+  ]
+}
